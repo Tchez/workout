@@ -2,6 +2,8 @@
 
 A Portuguese personal workout PWA: a five-day training plan, mobility instructions with YouTube references, set completion, a rest timer and dated sessions saved in the browser. Settings export and restore a portable JSON backup for manual transfers between devices.
 
+**Live app:** https://tchez.github.io/workout/ · **Repository:** https://github.com/Tchez/workout
+
 ## Run locally
 
 No build step, package installation or runtime dependencies are needed. Serve the repository over HTTP, rather than opening `index.html` directly: modules, the workout JSON and the service worker use browser HTTP APIs.
@@ -19,7 +21,7 @@ Open `http://localhost:8080`. Alternatively use `npm start`. The app uses relati
 3. Open the HTTPS address reported by GitHub. For a repository called `workout`, a project site normally uses `https://<username>.github.io/workout/`.
 4. After the first connected visit and successful cache installation, the training interface can reopen offline. YouTube demonstrations require internet.
 
-See [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). No remote repository, commit, push, Pages configuration or public deployment is created by the local setup.
+See [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). This repository publishes from `main` at `/ (root)`. The GitHub Pages address is `https://tchez.github.io/workout/`; `.nojekyll` keeps this a static deployment.
 
 On iPhone, open the HTTPS site in Safari and use **Share → Add to Home Screen**. Desktop and Android installation controls depend on the browser. Manifest and service-worker support need HTTPS in production; localhost is suitable for development. See [MDN's installability guidance](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable).
 
