@@ -1,0 +1,384 @@
+[
+  {
+    "day": "Segunda",
+    "title": "Inferiores A",
+    "volley": false,
+    "warmTime": "8–10",
+    "exercises": [
+      {
+        "name": "Agachamento livre",
+        "sets": 3,
+        "reps": "6–10",
+        "rest": 150,
+        "restLabel": "2–3 min",
+        "note": "",
+        "id": "agachamento-livre"
+      },
+      {
+        "name": "Cadeira extensora",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "cadeira-extensora"
+      },
+      {
+        "name": "Cadeira flexora",
+        "sets": 3,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "cadeira-flexora"
+      },
+      {
+        "name": "Panturrilha em pé",
+        "sets": 3,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "panturrilha-em-pe"
+      },
+      {
+        "name": "Extensão de tronco no banco 45°",
+        "sets": 2,
+        "reps": "12–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "Termine alinhado às pernas, sem hiperestender.",
+        "id": "extensao-de-tronco-no-banco-45"
+      },
+      {
+        "name": "Abdominal na polia",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "abdominal-na-polia"
+      }
+    ],
+    "short": "SEG",
+    "focus": "Pernas e abdômen",
+    "time": "45–55",
+    "note": "Quadríceps, posteriores, panturrilhas e lombar. Mantenha margem para o vôlei de terça.",
+    "warm": [
+      "ankle",
+      "squat",
+      "hinge"
+    ],
+    "prep": "Depois, faça as séries progressivas do agachamento.",
+    "effort": "Deixe 1–3 repetições de margem. Na extensão de tronco, mantenha 3 e termine alinhado, sem jogar o corpo para trás.",
+    "id": "mon"
+  },
+  {
+    "day": "Terça",
+    "title": "Superiores A",
+    "volley": true,
+    "warmTime": "8–10",
+    "exercises": [
+      {
+        "name": "Supino inclinado com halteres",
+        "sets": 3,
+        "reps": "6–10",
+        "rest": 120,
+        "restLabel": "2 min",
+        "note": "",
+        "id": "supino-inclinado-com-halteres"
+      },
+      {
+        "name": "Puxada alta com pegada neutra",
+        "sets": 3,
+        "reps": "8–12",
+        "rest": 120,
+        "restLabel": "2 min",
+        "note": "",
+        "id": "puxada-alta-com-pegada-neutra"
+      },
+      {
+        "name": "Remada com apoio para o peito",
+        "sets": 2,
+        "reps": "8–12",
+        "rest": 120,
+        "restLabel": "2 min",
+        "note": "",
+        "id": "remada-com-apoio-para-o-peito"
+      },
+      {
+        "name": "Crucifixo na polia",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "crucifixo-na-polia"
+      },
+      {
+        "name": "Elevação lateral",
+        "sets": 2,
+        "reps": "12–20",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "elevacao-lateral"
+      },
+      {
+        "name": "Rosca Scott",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "rosca-scott"
+      },
+      {
+        "name": "Tríceps na polia com corda",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "triceps-na-polia-com-corda"
+      }
+    ],
+    "short": "TER",
+    "focus": "Peito e costas",
+    "time": "45–55",
+    "note": "Peito, costas, ombros e braços. Guarde energia para a quadra.",
+    "warm": [
+      "wrist",
+      "palm",
+      "thoracic",
+      "wall"
+    ],
+    "prep": "Depois, aqueça o supino com séries progressivas e faça uma preparação leve antes da primeira puxada.",
+    "effort": "Mantenha cerca de 3 repetições de margem por causa do vôlei. Pode alternar bíceps e tríceps, descansando 90–120 segundos após o par.",
+    "id": "tue"
+  },
+  {
+    "day": "Quarta",
+    "title": "Acessórios e abdômen",
+    "volley": true,
+    "warmTime": "6–8",
+    "exercises": [
+      {
+        "name": "Encolhimento com halteres ou barra guiada",
+        "sets": 3,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "encolhimento-com-halteres-ou-barra-guiada"
+      },
+      {
+        "name": "Crucifixo invertido na máquina ou polia",
+        "sets": 2,
+        "reps": "12–20",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "crucifixo-invertido-na-maquina-ou-polia"
+      },
+      {
+        "name": "Abdominal reverso, elevando a pelve",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "abdominal-reverso-elevando-a-pelve"
+      },
+      {
+        "name": "Antirrotação na polia",
+        "sets": 2,
+        "reps": "10–15 por lado",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "Mantenha peito e quadril voltados para a frente.",
+        "id": "antirrotacao-na-polia"
+      },
+      {
+        "name": "Rosca inversa",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "rosca-inversa"
+      }
+    ],
+    "short": "QUA",
+    "focus": "Acessórios e abdômen",
+    "time": "30–40",
+    "note": "Trapézio, ombros, antebraços e estabilidade do tronco. Uma sessão mais curta antes do vôlei.",
+    "warm": [
+      "wrist",
+      "palm",
+      "thoracic",
+      "wall"
+    ],
+    "prep": "Depois, faça uma série leve do primeiro exercício. Sem chegar à fadiga.",
+    "effort": "Mantenha cerca de 3 repetições de margem. O objetivo é complementar a semana e chegar bem ao vôlei.",
+    "id": "wed"
+  },
+  {
+    "day": "Quinta",
+    "title": "Superiores B",
+    "volley": false,
+    "warmTime": "8–10",
+    "exercises": [
+      {
+        "name": "Supino reto com halteres ou máquina",
+        "sets": 3,
+        "reps": "6–10",
+        "rest": 120,
+        "restLabel": "2 min",
+        "note": "",
+        "id": "supino-reto-com-halteres-ou-maquina"
+      },
+      {
+        "name": "Remada com apoio para o peito",
+        "sets": 3,
+        "reps": "8–12",
+        "rest": 120,
+        "restLabel": "2 min",
+        "note": "",
+        "id": "remada-com-apoio-para-o-peito"
+      },
+      {
+        "name": "Puxada alta",
+        "sets": 2,
+        "reps": "8–12",
+        "rest": 120,
+        "restLabel": "2 min",
+        "note": "",
+        "id": "puxada-alta"
+      },
+      {
+        "name": "Crucifixo na máquina",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "crucifixo-na-maquina"
+      },
+      {
+        "name": "Elevação lateral",
+        "sets": 3,
+        "reps": "12–20",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "elevacao-lateral"
+      },
+      {
+        "name": "Rosca martelo",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "rosca-martelo"
+      },
+      {
+        "name": "Tríceps francês com halter ou na polia",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "triceps-frances-com-halter-ou-na-polia"
+      }
+    ],
+    "short": "QUI",
+    "focus": "Peito e costas",
+    "time": "50–60",
+    "note": "Segunda sessão de superiores, com ênfase no supino reto e na remada.",
+    "warm": [
+      "wrist",
+      "palm",
+      "thoracic",
+      "wall"
+    ],
+    "prep": "Depois, aqueça o supino com séries progressivas e faça uma preparação leve antes da primeira remada.",
+    "effort": "Trabalhe com 1–3 repetições de margem. Pode alternar bíceps e tríceps, descansando 90–120 segundos após o par.",
+    "id": "thu"
+  },
+  {
+    "day": "Sexta",
+    "title": "Inferiores B",
+    "volley": false,
+    "warmTime": "8–10",
+    "exercises": [
+      {
+        "name": "Terra romeno",
+        "sets": 3,
+        "reps": "6–10",
+        "rest": 150,
+        "restLabel": "2–3 min",
+        "note": "",
+        "id": "terra-romeno"
+      },
+      {
+        "name": "Prensa de pernas (leg press)",
+        "sets": 3,
+        "reps": "8–12",
+        "rest": 120,
+        "restLabel": "2 min",
+        "note": "",
+        "id": "prensa-de-pernas-leg-press"
+      },
+      {
+        "name": "Agachamento búlgaro",
+        "sets": 2,
+        "reps": "8–12 por perna",
+        "rest": 90,
+        "restLabel": "90–120 s",
+        "note": "Duas séries para cada perna. Descanso após os dois lados.",
+        "id": "agachamento-bulgaro"
+      },
+      {
+        "name": "Cadeira ou mesa flexora",
+        "sets": 2,
+        "reps": "10–15",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "cadeira-ou-mesa-flexora"
+      },
+      {
+        "name": "Panturrilha sentada",
+        "sets": 3,
+        "reps": "12–20",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "panturrilha-sentada"
+      },
+      {
+        "name": "Cadeira adutora",
+        "sets": 2,
+        "reps": "12–20",
+        "rest": 75,
+        "restLabel": "60–90 s",
+        "note": "",
+        "id": "cadeira-adutora"
+      }
+    ],
+    "short": "SEX",
+    "focus": "Pernas e glúteos",
+    "time": "50–60",
+    "note": "Posteriores, quadríceps, glúteos, panturrilhas e adutores. Considere também os jogos do fim de semana.",
+    "warm": [
+      "ankle",
+      "hinge",
+      "lateral"
+    ],
+    "prep": "Depois, faça séries progressivas do terra romeno e uma preparação leve na prensa de pernas.",
+    "effort": "Trabalhe com 1–3 repetições de margem, ajustando o esforço se houver vôlei extra no fim de semana.",
+    "id": "fri"
+  }
+]

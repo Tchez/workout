@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#111413">
+<meta name="author" content="Marco Netto">
+<meta name="description" content="Sua ficha de treino, organizada por dia, com mobilidade guiada e marcação de séries.">
+<title>Workout · Meu treino</title>
+<link rel="stylesheet" href="./app.css">
+</head>
+<body>
+<svg aria-hidden="true" style="display:none"><defs>
+<symbol id="i-barbell" viewBox="0 0 24 24"><path d="M2 12h1m3-4v8m-3-9v10m18-5h1m-4-4v8m3-9v10M6 12h12M6 8H3m3 8H3m15-8h3m-3 8h3"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="m7 4 14 8-14 8z"/></symbol>
+<symbol id="i-external" viewBox="0 0 24 24"><path d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6M11 13 20 4m-5 0h5v5"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+</defs></svg>
+<a class="skip" href="#day-heading">Ir para a ficha</a>
+<noscript><p class="noscript">Ative o JavaScript no navegador para navegar pela ficha.</p></noscript>
+<div class="app">
+<aside class="sidebar" aria-label="Navegação semanal">
+<div class="brand"><span class="brandmark"><svg aria-hidden="true"><use href="#i-barbell"/></svg></span>Meu treino.</div>
+<div class="mobile-header"><div class="topbar"><div class="brand mobile-brand"><span class="brandmark"><svg aria-hidden="true"><use href="#i-barbell"/></svg></span>Meu treino.</div><button class="icon-button" data-settings aria-label="Abrir preferências"><svg aria-hidden="true"><use href="#i-settings"/></svg></button></div></div>
+<div><p class="eyebrow sidebar-label">Sua semana</p><nav class="weeknav" id="weeknav" aria-label="Dias de treino"></nav></div>
+<div class="sidebar-bottom"><span class="eyebrow accent">Consistência primeiro</span><p><strong>Até 60 minutos por sessão.</strong><br>Musculação + mobilidade.<br>Vôlei às terças e quartas.</p></div>
+</aside>
+<main class="main" id="main">
+<div class="topbar"><span class="eyebrow muted">Ficha pessoal / Marco</span><div class="topbar-right"><span class="topdate" id="topdate"></span><button class="icon-button" data-settings aria-label="Abrir preferências"><svg aria-hidden="true"><use href="#i-settings"/></svg></button></div></div>
+<p id="storage-notice" class="data-error" hidden>Os dados estão apenas nesta página. Use Configurações → Baixar backup JSON antes de sair.</p><div id="day-content"></div>
+<footer class="footer"><span>Seu treino. Uma série de cada vez.</span><button class="text-button" id="reset-day">Reiniciar marcações de hoje</button></footer>
+</main>
+</div>
+<aside class="timer-bar" id="timer-bar" aria-label="Cronômetro de descanso" hidden>
+<svg aria-hidden="true" class="accent"><use href="#i-clock"/></svg><div><div class="timer-label" id="timer-label">Descanso</div><div class="timer-time" id="timer-time" role="timer" aria-live="off">02:00</div></div>
+<div class="timer-controls"><button id="timer-add" aria-label="Adicionar 30 segundos">+30s</button><button class="timer-main" id="timer-toggle">Pausar</button><button id="timer-close" aria-label="Fechar cronômetro"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+</aside>
+<div class="toast" id="toast" role="status" hidden></div>
+<dialog id="settings"><div class="dialog-top"><h2>Configurações</h2><button class="icon-button" data-close-dialog="settings" aria-label="Fechar preferências"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+<p>Aparência</p><div class="theme-options" role="group" aria-label="Tema"><button class="theme-choice" data-theme-choice="dark">Escuro</button><button class="theme-choice" data-theme-choice="light">Claro</button><button class="theme-choice" data-theme-choice="system">Automático</button></div>
+<div class="dialog-section"><strong>Seus dados</strong><p id="data-summary"></p><p id="storage-summary"></p><div class="data-actions"><button class="wide-button" data-export>Baixar backup JSON</button><button class="wide-button secondary" id="choose-import">Importar backup JSON</button></div><input type="file" id="import-file" accept=".json,application/json" hidden><p class="data-error" id="import-error" role="alert" hidden></p><p>O backup inclui preferências, sessões e os exercícios previstos em cada sessão. Guarde o arquivo em um lugar seguro.</p><button class="text-button" id="protect-storage">Solicitar armazenamento persistente</button><p id="persistence-status" role="status"></p><details class="history-details"><summary id="history-count">Sessões registradas</summary><ul id="session-history" class="history-list"></ul></details><button class="text-button" id="clear-data">Apagar sessões deste navegador…</button></div>
+<div class="dialog-section"><strong>Instalação e uso offline</strong><p id="pwa-status" role="status">Verificando disponibilidade offline…</p><p>No iPhone: abra o endereço no Safari, use Compartilhar → Adicionar à Tela de Início. Em navegadores compatíveis no computador e Android, procure a opção de instalar no menu.</p><button class="wide-button secondary" id="update-app" hidden>Atualizar aplicativo</button></div>
+<div class="dialog-section"><strong>Como usar</strong><p>Escolha o dia, faça a mobilidade e toque em cada série ao terminar. O relógio ao lado do descanso abre um cronômetro opcional.</p><p>As sessões e preferências ficam neste navegador, com histórico por data. Para transferir entre celular e computador, baixe o backup JSON e importe no outro dispositivo. Essa transferência substitui os dados após confirmação; não há sincronização automática.</p></div>
+<div class="dialog-section"><strong>Esforço e progressão</strong><p>Comece com 2–3 repetições de margem. Depois, trabalhe normalmente com 1–3. Na terça e quarta, mantenha cerca de 3 por causa do vôlei. Ao chegar ao topo da faixa em todas as séries com essa margem, aumente a carga pelo menor incremento disponível.</p></div>
+<div class="dialog-section"><strong>Vídeos de mobilidade</strong><p>Abrem no YouTube e precisam de internet. Alguns são em inglês; as instruções e a dose da sua ficha estão em português. Use o vídeo para observar o movimento e siga as repetições indicadas aqui.</p></div>
+<div class="dialog-section"><strong>Seu punho</strong><p>Use movimentos confortáveis, sem forçar amplitude ou provocar estalos. Adapte ou interrompa exercícios que provoquem dor. Dor recorrente merece avaliação com fisioterapeuta ou médico; perda de sensibilidade, dor intensa ou incapacidade de segurar objetos pedem atendimento mais rápido.</p><div class="source-links"><a href="https://www.nhs.uk/symptoms/hand-pain/wrist-pain/" target="_blank" rel="noopener noreferrer">Orientação sobre o punho</a><a href="https://pubmed.ncbi.nlm.nih.gov/26642915/" target="_blank" rel="noopener noreferrer">Alongamento e aquecimento</a></div></div>
+<button class="wide-button" data-close-dialog="settings">Voltar à ficha</button></dialog>
+<dialog id="reset-dialog"><div class="dialog-top"><h2>Recomeçar este dia?</h2></div><p>Limpar apenas as séries e a conclusão do treino selecionado nas marcações de hoje.</p><button class="wide-button" id="confirm-reset">Limpar marcações</button><button class="wide-button secondary" data-close-dialog="reset-dialog">Cancelar</button></dialog>
+
+<dialog id="import-preview" aria-labelledby="import-heading"><h2 id="import-heading">Importar este backup?</h2><p id="import-name" class="backup-name"></p><div class="backup-summary"><strong>Arquivo selecionado</strong><p id="import-summary"></p><strong>Neste dispositivo agora</strong><p id="current-summary"></p></div><p>As preferências e todas as sessões locais serão substituídas pelos dados do arquivo. Se quiser preservar o estado atual, baixe uma cópia antes.</p><p class="data-error" id="preview-error" role="alert" hidden></p><button class="wide-button secondary" data-export>Baixar estado atual antes</button><button class="wide-button" id="confirm-import">Substituir dados e importar</button><button class="wide-button secondary" data-close-dialog="import-preview">Cancelar</button></dialog>
+<dialog id="clear-preview" aria-labelledby="clear-heading"><h2 id="clear-heading">Apagar as sessões locais?</h2><p>Isso apaga todas as sessões guardadas neste navegador. O tema será preservado. Um backup exportado permite restaurar os dados depois.</p><p class="data-error" id="clear-error" role="alert" hidden></p><button class="wide-button secondary" data-export>Baixar backup antes</button><button class="wide-button" id="confirm-clear">Apagar sessões locais</button><button class="wide-button secondary" data-close-dialog="clear-preview">Cancelar</button></dialog>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
