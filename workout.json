@@ -11,7 +11,25 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "agachamento-livre"
+        "id": "agachamento-livre",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        },
+        "warmup": {
+          "mode": "ramp",
+          "steps": [
+            {
+              "reps": 6,
+              "loadPercent": 40
+            },
+            {
+              "reps": 6,
+              "loadPercent": 80
+            }
+          ]
+        }
       },
       {
         "name": "Cadeira extensora",
@@ -20,7 +38,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "cadeira-extensora"
+        "id": "cadeira-extensora",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Cadeira flexora",
@@ -29,7 +52,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "cadeira-flexora"
+        "id": "cadeira-flexora",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Panturrilha em pé",
@@ -38,7 +66,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "panturrilha-em-pe"
+        "id": "panturrilha-em-pe",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Extensão de tronco no banco 45°",
@@ -47,7 +80,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "Termine alinhado às pernas, sem hiperestender.",
-        "id": "extensao-de-tronco-no-banco-45"
+        "id": "extensao-de-tronco-no-banco-45",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Abdominal na polia",
@@ -56,7 +94,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "abdominal-na-polia"
+        "id": "abdominal-na-polia",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       }
     ],
     "short": "SEG",
@@ -67,13 +110,7 @@
       "hinge"
     ],
     "id": "mon",
-    "preparation": [
-      {
-        "title": "Agachamento livre",
-        "dose": "Séries progressivas",
-        "description": "Use carga leve e aumente gradualmente até a carga de trabalho, sem fadiga. As séries preparatórias não contam nas séries do treino."
-      }
-    ]
+    "preparation": []
   },
   {
     "day": "Terça",
@@ -87,7 +124,25 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "supino-inclinado-com-halteres"
+        "id": "supino-inclinado-com-halteres",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        },
+        "warmup": {
+          "mode": "ramp",
+          "steps": [
+            {
+              "reps": 6,
+              "loadPercent": 40
+            },
+            {
+              "reps": 6,
+              "loadPercent": 80
+            }
+          ]
+        }
       },
       {
         "name": "Puxada alta com pegada neutra",
@@ -96,7 +151,12 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "puxada-alta-com-pegada-neutra"
+        "id": "puxada-alta-com-pegada-neutra",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Remada com apoio para o peito",
@@ -105,7 +165,12 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "remada-com-apoio-para-o-peito"
+        "id": "remada-com-apoio-para-o-peito",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Crucifixo na polia",
@@ -114,7 +179,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "crucifixo-na-polia"
+        "id": "crucifixo-na-polia",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Elevação lateral",
@@ -123,7 +193,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "elevacao-lateral"
+        "id": "elevacao-lateral",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Rosca Scott",
@@ -132,7 +207,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "rosca-scott"
+        "id": "rosca-scott",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Tríceps na polia com corda",
@@ -141,7 +221,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "triceps-na-polia-com-corda"
+        "id": "triceps-na-polia-com-corda",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       }
     ],
     "short": "TER",
@@ -155,14 +240,16 @@
     "id": "tue",
     "preparation": [
       {
-        "title": "Supino inclinado",
-        "dose": "Séries progressivas",
-        "description": "Use carga leve e aumente gradualmente até a carga de trabalho, sem fadiga. As séries preparatórias não contam nas séries do treino."
+        "title": "Flexão de braços",
+        "sets": 1,
+        "reps": "8",
+        "description": "Faça 8 repetições fáceis, terminando com pelo menos 4 repetições de margem. Pode apoiar as mãos num banco ou usar pegadores para manter os punhos confortáveis. Se houver dor, use 1 × 8 no supino com carga leve."
       },
       {
-        "title": "Puxada alta",
-        "dose": "1 série leve",
-        "description": "Faça uma série com carga leve, sem chegar à fadiga. Ela não conta nas séries do treino."
+        "title": "Barra fixa",
+        "sets": 1,
+        "reps": "3",
+        "description": "Faça 3 repetições controladas com pelo menos 4 repetições de margem. Use assistência no graviton ou elástico para manter o esforço leve. Se a pegada incomodar, use 1 × 8 na puxada com carga leve."
       }
     ]
   },
@@ -178,7 +265,21 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "encolhimento-com-halteres-ou-barra-guiada"
+        "id": "encolhimento-com-halteres-ou-barra-guiada",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        },
+        "warmup": {
+          "mode": "light",
+          "steps": [
+            {
+              "reps": 8,
+              "loadPercent": 50
+            }
+          ]
+        }
       },
       {
         "name": "Crucifixo invertido na máquina ou polia",
@@ -187,7 +288,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "crucifixo-invertido-na-maquina-ou-polia"
+        "id": "crucifixo-invertido-na-maquina-ou-polia",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Abdominal reverso, elevando a pelve",
@@ -196,7 +302,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "abdominal-reverso-elevando-a-pelve"
+        "id": "abdominal-reverso-elevando-a-pelve",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Antirrotação na polia",
@@ -205,7 +316,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "Mantenha peito e quadril voltados para a frente.",
-        "id": "antirrotacao-na-polia"
+        "id": "antirrotacao-na-polia",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       },
       {
         "name": "Rosca inversa",
@@ -214,7 +330,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "rosca-inversa"
+        "id": "rosca-inversa",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 3,
+          "max": 3
+        }
       }
     ],
     "short": "QUA",
@@ -226,13 +347,7 @@
       "wall"
     ],
     "id": "wed",
-    "preparation": [
-      {
-        "title": "Encolhimento",
-        "dose": "1 série leve",
-        "description": "Faça uma série com carga leve, sem chegar à fadiga. Ela não conta nas séries do treino."
-      }
-    ]
+    "preparation": []
   },
   {
     "day": "Quinta",
@@ -246,7 +361,25 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "supino-reto-com-halteres-ou-maquina"
+        "id": "supino-reto-com-halteres-ou-maquina",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        },
+        "warmup": {
+          "mode": "ramp",
+          "steps": [
+            {
+              "reps": 6,
+              "loadPercent": 40
+            },
+            {
+              "reps": 6,
+              "loadPercent": 80
+            }
+          ]
+        }
       },
       {
         "name": "Remada com apoio para o peito",
@@ -255,7 +388,21 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "remada-com-apoio-para-o-peito"
+        "id": "remada-com-apoio-para-o-peito",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        },
+        "warmup": {
+          "mode": "light",
+          "steps": [
+            {
+              "reps": 8,
+              "loadPercent": 50
+            }
+          ]
+        }
       },
       {
         "name": "Puxada alta",
@@ -264,7 +411,12 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "puxada-alta"
+        "id": "puxada-alta",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Crucifixo na máquina",
@@ -273,7 +425,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "crucifixo-na-maquina"
+        "id": "crucifixo-na-maquina",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Elevação lateral",
@@ -282,7 +439,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "elevacao-lateral"
+        "id": "elevacao-lateral",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Rosca martelo",
@@ -291,7 +453,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "rosca-martelo"
+        "id": "rosca-martelo",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Tríceps francês com halter ou na polia",
@@ -300,7 +467,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "triceps-frances-com-halter-ou-na-polia"
+        "id": "triceps-frances-com-halter-ou-na-polia",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       }
     ],
     "short": "QUI",
@@ -314,14 +486,16 @@
     "id": "thu",
     "preparation": [
       {
-        "title": "Supino reto",
-        "dose": "Séries progressivas",
-        "description": "Use carga leve e aumente gradualmente até a carga de trabalho, sem fadiga. As séries preparatórias não contam nas séries do treino."
+        "title": "Flexão de braços",
+        "sets": 1,
+        "reps": "8",
+        "description": "Faça 8 repetições fáceis, terminando com pelo menos 4 repetições de margem. Pode apoiar as mãos num banco ou usar pegadores para manter os punhos confortáveis. Se houver dor, use 1 × 8 no supino com carga leve."
       },
       {
-        "title": "Remada",
-        "dose": "1 série leve",
-        "description": "Faça uma série com carga leve, sem chegar à fadiga. Ela não conta nas séries do treino."
+        "title": "Barra fixa",
+        "sets": 1,
+        "reps": "3",
+        "description": "Faça 3 repetições controladas com pelo menos 4 repetições de margem. Use assistência no graviton ou elástico para manter o esforço leve. Se a pegada incomodar, use 1 × 8 na puxada com carga leve."
       }
     ]
   },
@@ -337,7 +511,25 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "terra-romeno"
+        "id": "terra-romeno",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        },
+        "warmup": {
+          "mode": "ramp",
+          "steps": [
+            {
+              "reps": 6,
+              "loadPercent": 40
+            },
+            {
+              "reps": 6,
+              "loadPercent": 80
+            }
+          ]
+        }
       },
       {
         "name": "Prensa de pernas (leg press)",
@@ -346,7 +538,21 @@
         "rest": 120,
         "restLabel": "2 min",
         "note": "",
-        "id": "prensa-de-pernas-leg-press"
+        "id": "prensa-de-pernas-leg-press",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        },
+        "warmup": {
+          "mode": "light",
+          "steps": [
+            {
+              "reps": 8,
+              "loadPercent": 50
+            }
+          ]
+        }
       },
       {
         "name": "Agachamento búlgaro",
@@ -355,7 +561,12 @@
         "rest": 90,
         "restLabel": "90 s",
         "note": "Duas séries para cada perna. Descanso após os dois lados.",
-        "id": "agachamento-bulgaro"
+        "id": "agachamento-bulgaro",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Cadeira ou mesa flexora",
@@ -364,7 +575,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "cadeira-ou-mesa-flexora"
+        "id": "cadeira-ou-mesa-flexora",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Panturrilha sentada",
@@ -373,7 +589,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "panturrilha-sentada"
+        "id": "panturrilha-sentada",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       },
       {
         "name": "Cadeira adutora",
@@ -382,7 +603,12 @@
         "rest": 60,
         "restLabel": "60 s",
         "note": "",
-        "id": "cadeira-adutora"
+        "id": "cadeira-adutora",
+        "loadMode": "steady",
+        "repsInReserve": {
+          "min": 1,
+          "max": 3
+        }
       }
     ],
     "short": "SEX",
@@ -393,17 +619,6 @@
       "lateral"
     ],
     "id": "fri",
-    "preparation": [
-      {
-        "title": "Terra romeno",
-        "dose": "Séries progressivas",
-        "description": "Use carga leve e aumente gradualmente até a carga de trabalho, sem fadiga. As séries preparatórias não contam nas séries do treino."
-      },
-      {
-        "title": "Prensa de pernas",
-        "dose": "1 série leve",
-        "description": "Faça uma série com carga leve, sem chegar à fadiga. Ela não conta nas séries do treino."
-      }
-    ]
+    "preparation": []
   }
 ]

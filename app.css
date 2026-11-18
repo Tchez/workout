@@ -76,3 +76,22 @@ dialog p,dialog li,.dialog-section strong,.history-list strong,.history-list li,
   .main{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
 }
 @media(max-width:370px){.exercise-metrics{gap:8px}.exercise{padding:14px}.set-button{min-width:58px;padding:8px 6px}.load-button{padding:7px 9px}.progress-box{padding:14px}}
+
+.exercise-metrics{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px}
+.exercise-dose{display:flex;flex-direction:column;gap:2px;min-width:0}
+.exercise-metrics .rest-link{white-space:nowrap}
+.exercise-metrics .load-button{margin-left:0;min-width:72px}
+.last-load{white-space:nowrap}
+.load-mode{font-size:12px;color:var(--muted)}
+.exercise-warmup{margin:0 0 12px;border:1px solid var(--line);border-radius:10px}
+.exercise-warmup summary{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;cursor:pointer;padding:8px 11px;font-size:13px;color:var(--muted)}
+.exercise-warmup summary::-webkit-details-marker{display:none}
+.exercise-warmup summary svg{width:16px;height:16px}
+.exercise-warmup[open] summary svg{transform:rotate(180deg)}
+.exercise-warmup-body{border-top:1px solid var(--line);padding:12px}
+.warmup-method{font-size:13px;font-weight:600}
+.exercise-warmup ol{padding-left:20px;margin:8px 0}
+.exercise-warmup li{padding:4px 0;font-size:13px}
+.exercise-warmup li strong{margin-right:8px}
+.exercise-warmup li span,.exercise-warmup p{color:var(--muted);font-size:13px}
+.load-method{margin-top:8px}

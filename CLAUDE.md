@@ -7,6 +7,6 @@ Static, Portuguese workout PWA. Read README.md for product behavior, storage sem
 - Imports preview before an explicitly confirmed, validated replacement. Save failure must retain previous stored data and leave the dialog actionable. Escape imported text before rendering HTML.
 - Keep URLs relative for GitHub Pages project paths. Bump `sw.js` RELEASE when changing a cached asset. Do not cache external videos or delete another app's caches.
 - Keep personal health notes and exported state out of the public repo. Docs, code and comments use English; UI text uses Portuguese with proper accents.
-- Keep the workout screen concise: preparation belongs in expandable warm-up items, load history belongs in its dialog, and mobile settings must remain reachable without automatic scrolling.
+- Keep the workout screen concise: general preparation belongs in expandable warm-up items, specific preparation belongs inside its exercise card, and all doses need sets and repetitions or duration. Preparation never counts toward working-set progress. Keep load history in its dialog and mobile settings reachable without automatic scrolling.
 - Do not commit, push or publish unless asked. Backend, accounts, editable multi-plan workflows and per-set load/repetition logging require separate scope.
 - Validate changes with `npm test` and `npm run check`; additional UI and real-device checks must be reported honestly.

@@ -1,3 +1,5 @@
+import { prescriptionFields } from './prescription.js';
+
 export const STORAGE_KEY = 'workout-state-v2';
 export const PREVIOUS_STORAGE_KEY = 'workout-state-v1';
 export const LEGACY_KEY = 'marco-workout-v1';
@@ -49,7 +51,7 @@ export function sessionKey(sessionDate, dayId) {
 export function createSession(sessionDate, day) {
   return {
     date: date(sessionDate), dayId: day.id, title: day.title,
-    exercises: day.exercises.map(({ id, name, sets, reps }) => ({ id, name, sets, reps })),
+    exercises: day.exercises.map(exercise => ({ id: exercise.id, name: exercise.name, sets: exercise.sets, reps: exercise.reps, ...prescriptionFields(exercise) })),
     sets: {}, loads: {}, warm: false, finished: false, updatedAt: now()
   };
 }
@@ -101,7 +103,7 @@ export function validateState(input) {
       seen.add(id);
       if (!Number.isInteger(exercise.sets) || exercise.sets < 1 || exercise.sets > 30) fail('Quantidade de séries inválida no backup.');
       for (let index = 0; index < exercise.sets; index++) allowedSets.add(setKey({ id }, index));
-      return { id, name: label(exercise.name), sets: exercise.sets, reps: label(exercise.reps, 80) };
+      return { id, name: label(exercise.name), sets: exercise.sets, reps: label(exercise.reps, 80), ...prescriptionFields(exercise) };
     });
     if (!isObject(value.sets)) fail('Marcações inválidas no backup.');
     const sets = {};

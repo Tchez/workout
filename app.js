@@ -1,3 +1,4 @@
+import { doseLabel, warmupLabel, loadModeLabel, effortLabel } from './prescription.js';
 import { STORAGE_KEY, PREVIOUS_STORAGE_KEY, MAX_BACKUP_BYTES, emptyState, createSession, setKey, sessionKey, sessionProgress, loadState, saveState, exportBackup, parseBackup, replaceFromBackup, summarize, validateState, exerciseHistory, parseLoad } from './state.js';
 
 let response;
@@ -16,14 +17,14 @@ const escapeHTML=(value)=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 const days=await response.json();
 history.scrollRestoration='manual';
 const mobility={
- wrist:{title:'Dobrar e estender o punho',area:'Punhos',dose:'5–8 repetições confortáveis',description:'Apoie o antebraço na coxa ou numa mesa e deixe a mão livre. Mova a mão devagar para cima e para baixo. Sem peso, sem puxar com a outra mão e sem forçar a amplitude. Pare se a dor aumentar.',video:'1Vpl8GkDjYY',source:'Medbridge',lang:'EN'},
- palm:{title:'Virar a palma da mão',area:'Punhos e antebraços',dose:'5–8 repetições por lado',description:'Mantenha o cotovelo junto ao corpo e dobrado a 90°. Vire a palma para cima e para baixo, sem inclinar o punho. Use apenas a amplitude confortável.',video:'ZY-OIuj8qOE',source:'Medbridge',lang:'EN'},
- thoracic:{title:'Rotação torácica sentada',area:'Costas',dose:'5 repetições por lado',description:'Sente num banco com os pés no chão e os braços cruzados no peito. Gire suavemente o peito para um lado e volte. Quadril e joelhos continuam apontados para a frente. Sem procurar estalos.',video:'Rh58FvMz5pY',source:'Rodrigo Marcondes · Fisioterapeuta',lang:'PT'},
- wall:{title:'Braços deslizando na parede',area:'Ombros',dose:'6–8 repetições lentas',description:'De frente para a parede, apoie levemente os antebraços sobre uma toalha. Deslize os braços para cima e volte, sem arquear a lombar. Se o apoio incomodar o punho, faça o movimento sem contato com a parede.',video:'LqWvJ_11zEs',source:'Foundations',lang:'EN'},
- ankle:{title:'Joelho à parede',area:'Tornozelos',dose:'6 repetições por lado',description:'Com um pé perto da parede, leve o joelho em direção a ela acompanhando os dedos do pé. O calcanhar permanece no chão. Vá e volte devagar, ajustando a distância para não sentir dor ou pinçamento.',video:'6RHy0sB-6Y0',source:'Treinador Rafael Alexandre',lang:'PT'},
- squat:{title:'Agachamento sem peso',area:'Quadris e joelhos',dose:'8 repetições controladas',description:'Agache numa amplitude confortável, mantendo os pés apoiados e os joelhos acompanhando sua direção. Suba com controle. É uma preparação leve, sem rebotes nem esforço alto.',video:'nVsWUtN7NXI',source:'Bodyweight Squat Tutorial',lang:'EN'},
- hinge:{title:'Dobrar o quadril, sem carga',area:'Quadris e posteriores',dose:'8 repetições controladas',description:'Em pé, deixe os joelhos levemente dobrados e leve o bumbum para trás enquanto inclina o tronco. Volte controladamente. O movimento vem do quadril; não tente alcançar o chão arredondando as costas.',video:'XNVp6nWH2m8',source:'Elevate Chiropractic and Rehab',lang:'EN'},
- lateral:{title:'Deslocamento lateral do quadril',area:'Parte interna das coxas',dose:'4 repetições por lado',description:'Afaste os pés e transfira o quadril lentamente para um lado, dobrando esse joelho e mantendo a outra perna mais estendida. Volte ao centro e alterne. Use amplitude pequena, sem buscar abertura máxima; apoie-se somente se confortável para o punho.',video:'TEG3EdvvZoU',source:'The Human Movement Institute',lang:'EN'}
+ wrist:{title:'Dobrar e estender o punho',area:'Punhos',sets:1,reps:'5–8',description:'Apoie o antebraço na coxa ou numa mesa e deixe a mão livre. Mova a mão devagar para cima e para baixo. Sem peso, sem puxar com a outra mão e sem forçar a amplitude. Pare se a dor aumentar.',video:'1Vpl8GkDjYY',source:'Medbridge',lang:'EN'},
+ palm:{title:'Virar a palma da mão',area:'Punhos e antebraços',sets:1,reps:'5–8 por lado',description:'Mantenha o cotovelo junto ao corpo e dobrado a 90°. Vire a palma para cima e para baixo, sem inclinar o punho. Use apenas a amplitude confortável.',video:'ZY-OIuj8qOE',source:'Medbridge',lang:'EN'},
+ thoracic:{title:'Rotação torácica sentada',area:'Costas',sets:1,reps:'5 por lado',description:'Sente num banco com os pés no chão e os braços cruzados no peito. Gire suavemente o peito para um lado e volte. Quadril e joelhos continuam apontados para a frente. Sem procurar estalos.',video:'Rh58FvMz5pY',source:'Rodrigo Marcondes · Fisioterapeuta',lang:'PT'},
+ wall:{title:'Braços deslizando na parede',area:'Ombros',sets:1,reps:'6–8',description:'De frente para a parede, apoie levemente os antebraços sobre uma toalha. Deslize os braços para cima e volte, sem arquear a lombar. Se o apoio incomodar o punho, faça o movimento sem contato com a parede.',video:'LqWvJ_11zEs',source:'Foundations',lang:'EN'},
+ ankle:{title:'Joelho à parede',area:'Tornozelos',sets:1,reps:'6 por lado',description:'Com um pé perto da parede, leve o joelho em direção a ela acompanhando os dedos do pé. O calcanhar permanece no chão. Vá e volte devagar, ajustando a distância para não sentir dor ou pinçamento.',video:'6RHy0sB-6Y0',source:'Treinador Rafael Alexandre',lang:'PT'},
+ squat:{title:'Agachamento sem peso',area:'Quadris e joelhos',sets:1,reps:'8',description:'Agache numa amplitude confortável, mantendo os pés apoiados e os joelhos acompanhando sua direção. Suba com controle. É uma preparação leve, sem rebotes nem esforço alto.',video:'nVsWUtN7NXI',source:'Bodyweight Squat Tutorial',lang:'EN'},
+ hinge:{title:'Dobrar o quadril, sem carga',area:'Quadris e posteriores',sets:1,reps:'8',description:'Em pé, deixe os joelhos levemente dobrados e leve o bumbum para trás enquanto inclina o tronco. Volte controladamente. O movimento vem do quadril; não tente alcançar o chão arredondando as costas.',video:'XNVp6nWH2m8',source:'Elevate Chiropractic and Rehab',lang:'EN'},
+ lateral:{title:'Deslocamento lateral do quadril',area:'Parte interna das coxas',sets:1,reps:'4 por lado',description:'Afaste os pés e transfira o quadril lentamente para um lado, dobrando esse joelho e mantendo a outra perna mais estendida. Volte ao centro e alterne. Use amplitude pequena, sem buscar abertura máxima; apoie-se somente se confortável para o punho.',video:'TEG3EdvvZoU',source:'The Human Movement Institute',lang:'EN'}
 };
 const storage = { getItem: key => localStorage.getItem(key), setItem: (key,value) => localStorage.setItem(key,value), removeItem: key => localStorage.removeItem(key) };
 const loaded = loadState(storage,days);
@@ -44,15 +45,21 @@ function persist(){
   try{saved=saveState(storage,saved);storageOK=true;document.getElementById('storage-notice').hidden=true;return true;}catch{storageOK=false;document.getElementById('storage-notice').hidden=false;notify('Não foi possível salvar no navegador. Baixe um backup para preservar as alterações.');return false;}
 }
 function marks(){const day=days[activeDay];const key=sessionKey(dateKey(),day.id);if(saved.sessions[key])return saved.sessions[key];if(!drafts[key])drafts[key]=createSession(dateKey(),day);return drafts[key];}
-function currentDay(){const base=days[activeDay];const snapshot=marks();return {...base,title:snapshot.title,exercises:snapshot.exercises.map(exercise=>({...base.exercises.find(item=>item.id===exercise.id),rest:base.exercises.find(item=>item.id===exercise.id)?.rest||60,restLabel:base.exercises.find(item=>item.id===exercise.id)?.restLabel||'60 s',...exercise}))};}
+function currentDay(){
+  const base=days[activeDay];const snapshot=marks();
+  return {...base,title:snapshot.title,exercises:snapshot.exercises.map(exercise=>{
+    const planned=base.exercises.find(item=>item.id===exercise.id);
+    return {...planned,...exercise,loadMode:exercise.loadMode||planned?.loadMode||'steady',repsInReserve:exercise.repsInReserve||planned?.repsInReserve,warmup:exercise.warmup||planned?.warmup,rest:planned?.rest||60,restLabel:planned?.restLabel||'60 s'};
+  })};
+}
 function saveMarks(){const session=marks();session.updatedAt=new Date().toISOString();saved.sessions[sessionKey(session.date,session.dayId)]=session;const stored=persist();updateSaveStatus();return stored;}
 function applyTheme(){const dark=theme==='system'?matchMedia('(prefers-color-scheme: dark)').matches:theme!=='light';document.documentElement.dataset.theme=dark?'dark':'light';document.querySelector('meta[name="theme-color"]').content=dark?'#111413':'#f5f6f1';document.querySelectorAll('[data-theme-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeChoice===theme)));}
 applyTheme();matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(theme==='system')applyTheme();});
 function notify(message){const el=document.getElementById('toast');el.textContent=message;el.hidden=false;clearTimeout(toastHandle);toastHandle=setTimeout(()=>el.hidden=true,4000);}
-function warmCard(id,index){const m=mobility[id];return `<details class="warm-card"><summary><span class="warm-index">${String(index+1).padStart(2,'0')}</span><span><span class="warm-title">${m.title}</span><span class="warm-dose">${m.dose}</span></span>${icon('chevron','warm-arrow')}</summary><div class="warm-body"><p>${m.description}</p><a class="video-link" href="https://www.youtube.com/watch?v=${m.video}" target="_blank" rel="noopener noreferrer" aria-label="Ver ${m.title} no YouTube, nova aba"><span class="play">${icon('play')}</span><span><strong>Ver demonstração</strong><small>YouTube · ${m.source} · ${m.lang}</small></span>${icon('external')}</a></div></details>`;}
+function warmCard(id,index){const m=mobility[id];return `<details class="warm-card"><summary><span class="warm-index">${String(index+1).padStart(2,'0')}</span><span><span class="warm-title">${m.title}</span><span class="warm-dose">${doseLabel(m)}</span></span>${icon('chevron','warm-arrow')}</summary><div class="warm-body"><p>${m.description}</p><a class="video-link" href="https://www.youtube.com/watch?v=${m.video}" target="_blank" rel="noopener noreferrer" aria-label="Ver ${m.title} no YouTube, nova aba"><span class="play">${icon('play')}</span><span><strong>Ver demonstração</strong><small>YouTube · ${m.source} · ${m.lang}</small></span>${icon('external')}</a></div></details>`;}
 function renderNav(){document.getElementById('weeknav').innerHTML=days.map((d,i)=>`<button class="day-button" data-day="${i}" aria-current="${activeDay===i}" aria-label="${d.day}, ${d.title}"><span class="day-short">${d.short}</span><span class="day-details"><span class="day-name">${d.day}</span><span class="day-area">${d.title}</span></span>${todayIndex===i?'<span class="today-dot" aria-hidden="true"></span>':''}</button>`).join('');}
 function preparationCard(item, index) {
-  return `<details class="warm-card"><summary><span class="warm-index">${String(index+1).padStart(2,'0')}</span><span><span class="warm-title">${escapeHTML(item.title)}</span><span class="warm-dose">${escapeHTML(item.dose)}</span></span>${icon('chevron','warm-arrow')}</summary><div class="warm-body"><p>${escapeHTML(item.description)}</p></div></details>`;
+  return `<details class="warm-card"><summary><span class="warm-index">${String(index+1).padStart(2,'0')}</span><span><span class="warm-title">${escapeHTML(item.title)}</span><span class="warm-dose">${escapeHTML(doseLabel(item))}</span></span>${icon('chevron','warm-arrow')}</summary><div class="warm-body"><p>${escapeHTML(item.description)}</p></div></details>`;
 }
 const kgText = value => new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(value)+' kg';
 function loadButton(exercise, index) {
@@ -60,10 +67,16 @@ function loadButton(exercise, index) {
   const previous=exerciseHistory(saved,exercise.id).find(item=>item.date<dateKey());
   return `<button class="load-button" data-load="${index}" aria-label="Registrar carga de ${escapeHTML(exercise.name)}">${value!==undefined?kgText(value):'Carga +'}${value===undefined&&previous?`<span class="last-load">Última: ${kgText(previous.kg)}</span>`:''}</button>`;
 }
+function exerciseWarmup(exercise){
+  if(!exercise.warmup)return '';
+  const warmup=exercise.warmup;
+  return `<details class="exercise-warmup"><summary><span>Preparação · ${warmupLabel(warmup)}</span>${icon('chevron')}</summary><div class="exercise-warmup-body"><span class="warmup-method">${warmup.mode==='ramp'?'Carga crescente':'Carga leve'}</span><ol>${warmup.steps.map(step=>`<li><strong>${step.reps} reps</strong><span>${step.loadPercent}% da carga de trabalho</span></li>`).join('')}</ol><p>Percentuais aproximados da carga de treino de hoje. Ajuste ao equipamento e prepare sem fadiga.</p></div></details>`;
+}
 function exerciseCard(e,i,s) {
   return `<article class="exercise" id="exercise-${i}">
     <div class="exercise-top"><span class="exercise-num">${String(i+1).padStart(2,'0')}</span><h3>${escapeHTML(e.name)}</h3><span class="done-tag">Concluído</span></div>
-    <div class="exercise-metrics"><span><strong>${e.sets} × ${escapeHTML(e.reps)}</strong></span><button class="rest-link" data-rest="${e.rest}" aria-label="Iniciar descanso de ${e.restLabel}, ${escapeHTML(e.name)}">${icon('clock')}${e.restLabel}</button>${loadButton(e,i)}</div>
+    <div class="exercise-metrics"><span class="exercise-dose"><strong>${escapeHTML(doseLabel(e))}</strong><span class="load-mode">${loadModeLabel(e.loadMode)}</span></span><button class="rest-link" data-rest="${e.rest}" aria-label="Iniciar descanso de ${e.restLabel}, ${escapeHTML(e.name)}">${icon('clock')}${e.restLabel}</button>${loadButton(e,i)}</div>
+    ${exerciseWarmup(e)}
     <div class="sets" role="group" aria-label="Séries de ${escapeHTML(e.name)}">${Array.from({length:e.sets},(_,j)=>`<button class="set-button" data-ex="${i}" data-set="${j}" aria-pressed="${!!s.sets[setKey(e,j)]}" aria-label="${escapeHTML(e.name)}, série ${j+1}"><span class="set-box">${icon('check')}</span>Série ${j+1}</button>`).join('')}</div>
     ${e.note?`<p class="exercise-note">${escapeHTML(e.note)}</p>`:''}
   </article>`;
@@ -78,7 +91,7 @@ function render(){
   <div class="step-tabs" role="tablist" aria-label="Etapa do treino"><button class="step-tab" id="tab-warm" role="tab" aria-controls="warm-section" data-step="warm"><span>01</span>Aquecer</button><button class="step-tab" id="tab-train" role="tab" aria-controls="train-section" data-step="train"><span>02</span>Treinar</button></div>
   <div class="sections">
     <section id="warm-section" aria-labelledby="warm-title"><div class="section-head"><div class="section-title"><span class="section-number">01</span><h2 id="warm-title">Aquecimento</h2></div><span class="small muted">${d.warmTime} min</span></div>
-      <div class="warm-list">${preparationCard({title:'Bicicleta ou caminhada',dose:'2 minutos',description:'Comece em ritmo leve, sem se cansar.'},0)}${d.warm.map((id,index)=>warmCard(id,index+1)).join('')}${d.preparation.map((item,index)=>preparationCard(item,index+d.warm.length+1)).join('')}</div>
+      <div class="warm-list">${preparationCard({title:'Bicicleta ou caminhada',sets:1,seconds:120,description:'Comece em ritmo leve, sem se cansar.'},0)}${d.warm.map((id,index)=>warmCard(id,index+1)).join('')}${d.preparation.map((item,index)=>preparationCard(item,index+d.warm.length+1)).join('')}</div>
       <button class="wide-button warm-done" id="go-train">${s.warm?'Ir treinar':'Aquecimento feito'}${icon('check')}</button>
     </section>
     <section id="train-section" aria-labelledby="train-title"><div class="section-head"><div class="section-title"><span class="section-number">02</span><h2 id="train-title">Seu treino</h2></div><span class="small muted" id="exercise-count"></span></div>
@@ -150,6 +163,7 @@ function openLoad(index){
   const exercise=currentDay().exercises[index];
   editingLoad={id:exercise.id,date:dateKey(),dayId:days[activeDay].id};
   document.getElementById('load-exercise').textContent=exercise.name;
+  document.getElementById('load-method').textContent=loadModeLabel(exercise.loadMode)+'. '+(exercise.loadMode==='ramp'?'Aumente a carga entre as séries.':'Mantenha o peso nas séries de treino, ajustando se necessário.')+(exercise.repsInReserve?' Termine com '+effortLabel(exercise.repsInReserve)+'.':'');
   const value=marks().loads[exercise.id];
   document.getElementById('load-value').value=value!==undefined?String(value).replace('.',','):'';
   document.getElementById('load-error').hidden=true;

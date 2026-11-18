@@ -34,7 +34,9 @@ The backup has a versioned envelope and includes preferences, all saved sessions
 ## Workout flow
 
 - The current weekday opens by default. Mobile keeps **01 Aquecer / 02 Treinar**, progress and an always-accessible header with a settings gear. Switching panels does not automatically scroll the page.
-- Warm-up activities, including light movement and preparation sets, appear as expandable list items. YouTube links are limited to mobility demonstrations. Volleyball preparation and explanatory footnotes are omitted from the workout screen.
+- General warm-up activities appear as expandable list items, each with sets and repetitions or a timed duration. Upper-body days include easy push-ups and assisted pull-ups as needed. YouTube links are limited to mobility demonstrations.
+- Exercise-specific preparation appears inside its exercise card, with exact repetitions and percentages of the planned working load. **Carga crescente** describes preparation ramps; **Carga estável** describes the current working sets. Percentages refer to today's working load, not a one-repetition maximum, and are approximate equipment-adjusted references. The load dialog explains the prescribed repetitions in reserve.
+- Preparation sets have their own count and never increase working-set checkboxes, progress or the weekly training volume. A card can prescribe **2 × 6** preparatory repetitions followed by **3 × 6–10** working repetitions. Method labels distinguish within-session load behavior from progression across workouts; maximum-load testing is not prescribed by this plan.
 - Tap **Carga +** on an exercise to save today's load in kilograms. Decimal commas and zero are supported. Each exercise has one load per dated session, with prior loads available in its dialog and the latest earlier load shown on the workout card. Use a consistent convention for dumbbells and machines; set-by-set loads and actual repetition logging are outside this increment.
 - Rest buttons use one duration matching their countdown: 2 minutes for compound exercises, 90 seconds for Bulgarian squats and 60 seconds for the other accessories. **+30s** still lets the user extend an active rest manually.
 - Every set change, completed warm-up and saved load writes immediately. The progress card confirms successful saves or reports unavailable storage. Installing the PWA and finalizing the workout are not prerequisites for saving.
@@ -43,7 +45,7 @@ The backup has a versioned envelope and includes preferences, all saved sessions
 ## Storage behavior
 
 - `workout-state-v2` in `localStorage` holds schema version 2 preferences and sessions, including exercise loads. Sessions are keyed by São Paulo calendar date and training-day ID. Earlier dates remain saved; settings lists the 20 most recent sessions, while export includes all of them.
-- Opening a training day creates only an in-memory draft. A set change, saved load or completed warm-up saves a session. Exercise IDs and planned sets/reps are captured for that session so later plan edits do not rewrite its prescription. Previous loads are a reference, not automatically recorded as today's load.
+- Opening a training day creates only an in-memory draft. A set change, saved load or completed warm-up saves a session. Exercise IDs and planned sets/reps are captured for that session so later plan edits do not rewrite its prescription. New snapshots also preserve load mode, repetitions in reserve and specific preparation steps. These metadata fields are optional for older v1/v2 records; a current workout without them displays the live plan guidance while retaining its saved working-set count and loads. Previous loads are a reference, not automatically recorded as today's load.
 - Read failures block automatic writes to avoid replacing corrupt saved data. Write failures retain the current in-memory state, show an export reminder and allow retry. Quota and eviction behavior remain browser-controlled.
 - Settings can request persistent storage, when supported. A denial does not disable the app. Even a grant does not protect against manual deletion; regular JSON backups are still needed.
 - Existing `workout-state-v1` data or the older `marco-workout-v1` format is migrated when found on the same origin. Source keys remain intact until an explicit clear; the new key prevents older open app versions from discarding load fields. Version 1 backups are still accepted and upgraded on import. Corrupt current data is never replaced by an older fallback.
@@ -58,9 +60,10 @@ The backup has a versioned envelope and includes preferences, all saved sessions
 | `index.html`, `app.css`, `app.js` | Responsive UI, timers, settings and PWA registration |
 | `workout.json` | Shipped training prescription; update intentionally |
 | `state.js` | Schema validation, legacy migration, storage and JSON backup |
+| `prescription.js` | Dose formatting and validation of load methods, effort and preparation snapshots |
 | `sw.js` | Versioned offline app shell, scoped to this deployment path |
 | `manifest.webmanifest`, `icons/` | Install metadata and local app icons |
-| `state.test.js`, `sw.test.js` | Data safety, round-trip and offline-path tests |
+| `state.test.js`, `prescription.test.js`, `sw.test.js` | Data safety, prescription/working-volume, round-trip and offline-path tests |
 
 When changing any app-shell asset, bump `RELEASE` in `sw.js`. The worker precaches the release and waits when an older worker is active. Settings offers **Atualizar aplicativo**; the app saves state before activating the new worker and reloading. Cache cleanup only deletes old Workout caches for the same deployment path.
 
@@ -73,4 +76,4 @@ npm test
 npm run check
 ```
 
-The tests cover retention across dates, immutable prescription snapshots, load validation/history, backup round trips, v1 upgrades, preview non-mutation, replacement rather than merging, invalid files, quota recovery, legacy recovery, rest presets, GitHub Pages subpaths and offline-cache isolation. See [VALIDATION.md](VALIDATION.md) for the actual checks and remaining device checks.
+The tests cover retention across dates, immutable prescription snapshots, explicit doses, separation of preparation and working volume, method/effort validation, load history, backup round trips, v1 upgrades, preview non-mutation, replacement rather than merging, invalid files, quota recovery, legacy recovery, rest presets, GitHub Pages subpaths and offline-cache isolation. See [VALIDATION.md](VALIDATION.md) for the actual checks and remaining device checks.
