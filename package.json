@@ -1,12 +1,12 @@
 {
   "name": "workout",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "description": "Personal workout PWA with browser storage and portable JSON backups.",
   "scripts": {
     "test": "node --test",
-    "check": "node --check app.js && node --check state.js && node --check prescription.js && node --check sw.js",
+    "check": "node --check app.js && node --check state.js && node --check prescription.js && node --check browser.js && node --check sw.js",
     "start": "python3 -B -m http.server 8080 --bind 127.0.0.1"
   },
   "engines": { "node": ">=20" }

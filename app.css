@@ -95,3 +95,10 @@ dialog p,dialog li,.dialog-section strong,.history-list strong,.history-list li,
 .exercise-warmup li strong{margin-right:8px}
 .exercise-warmup li span,.exercise-warmup p{color:var(--muted);font-size:13px}
 .load-method{margin-top:8px}
+.save-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap}
+.save-row .save-status{margin:0}
+.save-row .text-button{font-size:12px;min-height:32px;padding:4px 0}
+.settings-details{border-top:1px solid var(--line);margin-top:16px;padding-top:8px}
+.settings-details summary{cursor:pointer;font-size:14px;padding:10px 0}
+.settings-details p{margin:8px 0}
+@media(display-mode:standalone),(display-mode:minimal-ui),(display-mode:window-controls-overlay){#install-guide{display:none}}

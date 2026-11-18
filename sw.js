@@ -1,9 +1,9 @@
 /* Bump the release when any app-shell file changes. */
-const RELEASE = '2026-11-18-v3';
+const RELEASE = '2026-11-18-v4';
 const ROOT = new URL('./', self.location.href);
 const PREFIX = 'workout:' + encodeURIComponent(ROOT.pathname) + ':';
 const CACHE = PREFIX + RELEASE;
-const SHELL = ['index.html', 'app.css', 'app.js', 'state.js', 'prescription.js', 'workout.json', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'].map(path => new URL(path, ROOT).href);
+const SHELL = ['index.html', 'app.css', 'app.js', 'state.js', 'prescription.js', 'browser.js', 'workout.json', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'].map(path => new URL(path, ROOT).href);
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));

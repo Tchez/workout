@@ -1,3 +1,4 @@
+import { runningInstalled, requestProtection } from './browser.js';
 import { doseLabel, warmupLabel, loadModeLabel, effortLabel } from './prescription.js';
 import { STORAGE_KEY, PREVIOUS_STORAGE_KEY, MAX_BACKUP_BYTES, emptyState, createSession, setKey, sessionKey, sessionProgress, loadState, saveState, exportBackup, parseBackup, replaceFromBackup, summarize, validateState, exerciseHistory, parseLoad } from './state.js';
 
@@ -31,6 +32,7 @@ const loaded = loadState(storage,days);
 let saved = loaded.state;
 let storageOK = loaded.available;
 let automaticSaveBlocked = loaded.blocked;
+let protectedStorage=false, protectionChecked=false, protectionBusy=false, protectionAttempted=false;
 let drafts = {};
 let activeDay=0; let activeStep='warm'; let theme=saved.preferences.theme; let toastHandle;
 const dateKey=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
@@ -52,7 +54,7 @@ function currentDay(){
     return {...planned,...exercise,loadMode:exercise.loadMode||planned?.loadMode||'steady',repsInReserve:exercise.repsInReserve||planned?.repsInReserve,warmup:exercise.warmup||planned?.warmup,rest:planned?.rest||60,restLabel:planned?.restLabel||'60 s'};
   })};
 }
-function saveMarks(){const session=marks();session.updatedAt=new Date().toISOString();saved.sessions[sessionKey(session.date,session.dayId)]=session;const stored=persist();updateSaveStatus();return stored;}
+function saveMarks(){const session=marks();session.updatedAt=new Date().toISOString();saved.sessions[sessionKey(session.date,session.dayId)]=session;const stored=persist();updateSaveStatus();if(stored&&!protectionAttempted)void protectHistory();return stored;}
 function applyTheme(){const dark=theme==='system'?matchMedia('(prefers-color-scheme: dark)').matches:theme!=='light';document.documentElement.dataset.theme=dark?'dark':'light';document.querySelector('meta[name="theme-color"]').content=dark?'#111413':'#f5f6f1';document.querySelectorAll('[data-theme-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeChoice===theme)));}
 applyTheme();matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(theme==='system')applyTheme();});
 function notify(message){const el=document.getElementById('toast');el.textContent=message;el.hidden=false;clearTimeout(toastHandle);toastHandle=setTimeout(()=>el.hidden=true,4000);}
@@ -87,7 +89,7 @@ function render(){
   document.getElementById('topdate').textContent=dateText();
   document.getElementById('day-content').innerHTML=`
   <header class="heading"><div><p class="eyebrow accent">${d.day}-feira</p><h1 id="day-heading" tabindex="-1">${escapeHTML(d.title)}</h1><p class="session-meta">${d.time} min · ${d.exercises.length} exercícios</p></div></header>
-  <div class="progress-box"><div class="progress-top"><span class="progress-text" id="progress-text"></span><span class="percent" id="percent">0%</span></div><div class="track" role="progressbar" aria-label="Séries concluídas" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="0"><div class="track-fill" id="track-fill"></div></div><p class="save-status" id="save-status" role="status"></p></div>
+  <div class="progress-box"><div class="progress-top"><span class="progress-text" id="progress-text"></span><span class="percent" id="percent">0%</span></div><div class="track" role="progressbar" aria-label="Séries concluídas" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="0"><div class="track-fill" id="track-fill"></div></div><div class="save-row"><p class="save-status" id="save-status" role="status"></p><button class="text-button" id="protect-storage" hidden>Proteger histórico</button></div></div>
   <div class="step-tabs" role="tablist" aria-label="Etapa do treino"><button class="step-tab" id="tab-warm" role="tab" aria-controls="warm-section" data-step="warm"><span>01</span>Aquecer</button><button class="step-tab" id="tab-train" role="tab" aria-controls="train-section" data-step="train"><span>02</span>Treinar</button></div>
   <div class="sections">
     <section id="warm-section" aria-labelledby="warm-title"><div class="section-head"><div class="section-title"><span class="section-number">01</span><h2 id="warm-title">Aquecimento</h2></div><span class="small muted">${d.warmTime} min</span></div>
@@ -102,7 +104,8 @@ function render(){
 }
 function updateSaveStatus(){
   const session=saved.sessions[sessionKey(dateKey(),days[activeDay].id)];
-  document.getElementById('save-status').textContent=!storageOK?'Não salvo · baixe um backup':session?'Salvo às '+new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'}).format(new Date(session.updatedAt)):'Sem registros hoje';
+  document.getElementById('save-status').textContent=!storageOK?'Não salvo · baixe um backup':session?'Salvo às '+new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'}).format(new Date(session.updatedAt)):'Salvamento automático ativo';
+  const protect=document.getElementById('protect-storage');protect.hidden=!storageOK||!protectionChecked||protectedStorage||!navigator.storage?.persist;protect.disabled=protectionBusy;protect.textContent=protectionBusy?'Ativando…':'Proteger histórico';
 }
 function updateProgress(){
   const d=currentDay();const s=marks();let completeExercises=0;
@@ -134,7 +137,7 @@ let timerPreset=120;
 function startTimer(seconds){timerPreset=seconds;timerRemaining=seconds;timerRunning=true;timerEnd=Date.now()+seconds*1000;timerBar.hidden=false;document.getElementById('timer-label').textContent='Descanso';document.getElementById('timer-toggle').textContent='Pausar';paintTimer();}
 setInterval(paintTimer,250);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){paintTimer();if(dateKey()!==visibleDate){visibleDate=dateKey();drafts={};render();}}});
-document.addEventListener('click',event=>{const target=event.target.closest('button');if(!target)return;if(target.dataset.day!==undefined){activeDay=Number(target.dataset.day);activeStep=marks().warm?'train':'warm';history.replaceState(null,'','#dia-'+(activeDay+1));render();window.scrollTo({top:0,behavior:'instant'});}else if(target.dataset.step){showStep(target.dataset.step,true);}else if(target.dataset.ex!==undefined){const s=marks();if(!s.sets)s.sets={};const key=setKey(currentDay().exercises[Number(target.dataset.ex)],Number(target.dataset.set));s.sets[key]=!s.sets[key];s.finished=false;saveMarks();updateProgress();}else if(target.dataset.load!==undefined){openLoad(Number(target.dataset.load));}else if(target.dataset.rest){startTimer(Number(target.dataset.rest));}else if(target.hasAttribute('data-settings')){refreshSettings();document.getElementById('settings').showModal();}else if(target.dataset.closeDialog){document.getElementById(target.dataset.closeDialog).close();}else if(target.dataset.themeChoice){theme=target.dataset.themeChoice;saved.preferences.theme=theme;persist();applyTheme();}});
+document.addEventListener('click',event=>{const target=event.target.closest('button');if(!target)return;if(target.dataset.day!==undefined){activeDay=Number(target.dataset.day);activeStep=marks().warm?'train':'warm';history.replaceState(null,'','#dia-'+(activeDay+1));render();window.scrollTo({top:0,behavior:'instant'});}else if(target.dataset.step){showStep(target.dataset.step,true);}else if(target.dataset.ex!==undefined){const s=marks();if(!s.sets)s.sets={};const key=setKey(currentDay().exercises[Number(target.dataset.ex)],Number(target.dataset.set));s.sets[key]=!s.sets[key];s.finished=false;saveMarks();updateProgress();}else if(target.dataset.load!==undefined){openLoad(Number(target.dataset.load));}else if(target.id==='protect-storage'){void protectHistory(true);}else if(target.dataset.rest){startTimer(Number(target.dataset.rest));}else if(target.hasAttribute('data-settings')){refreshSettings();document.getElementById('settings').showModal();}else if(target.dataset.closeDialog){document.getElementById(target.dataset.closeDialog).close();}else if(target.dataset.themeChoice){theme=target.dataset.themeChoice;saved.preferences.theme=theme;persist();applyTheme();}});
 document.addEventListener('keydown',event=>{const tab=event.target.closest('[data-step]');if(!tab||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const step=event.key==='Home'?'warm':event.key==='End'?'train':activeStep==='warm'?'train':'warm';showStep(step,false);document.getElementById('tab-'+step).focus();});
 document.getElementById('day-content').addEventListener('click',event=>{if(event.target.closest('#go-train')){marks().warm=true;saveMarks();showStep('train',true);}if(event.target.closest('#finish')&&!document.getElementById('finish').disabled){marks().finished=true;saveMarks();updateProgress();notify('Treino concluído. Bom descanso!');}});
 document.getElementById('reset-day').addEventListener('click',()=>document.getElementById('reset-dialog').showModal());document.getElementById('confirm-reset').addEventListener('click',()=>{const session=marks();session.sets={};session.warm=false;session.finished=false;saveMarks();document.getElementById('reset-dialog').close();render();notify('Marcações deste treino reiniciadas.');});
@@ -148,7 +151,7 @@ function shortDate(value){return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',
 function summaryText(state){const info=summarize(state);return `${info.sessions} ${info.sessions===1?'sessão':'sessões'} · ${info.finished} ${info.finished===1?'finalizada':'finalizadas'} · ${info.completedSets} ${info.completedSets===1?'série marcada':'séries marcadas'}${info.firstDate?' · '+shortDate(info.firstDate)+' a '+shortDate(info.lastDate):''}`;}
 function refreshSettings(){
   const info=summarize(saved);
-  document.getElementById('data-summary').textContent=summaryText(saved);
+  document.getElementById('data-summary').textContent=info.sessions+' '+(info.sessions===1?'sessão salva':'sessões salvas');
   document.getElementById('storage-summary').textContent=(storageOK?'Salvamento local ativo':'Salvamento local indisponível')+' · '+Math.ceil(info.bytes/1024)+' KB de dados';
   const history=document.getElementById('session-history');
   const sessions=Object.values(saved.sessions).sort((a,b)=>b.date.localeCompare(a.date)||b.updatedAt.localeCompare(a.updatedAt));
@@ -237,11 +240,32 @@ document.getElementById('confirm-clear').addEventListener('click',()=>{
     document.getElementById('clear-preview').close();refreshSettings();render();notify('Sessões locais apagadas. Tema preservado.');
   }catch(error){document.getElementById('clear-error').textContent='Não foi possível apagar: '+error.message;document.getElementById('clear-error').hidden=false;}
 });
-document.getElementById('protect-storage').addEventListener('click',async()=>{
-  const status=document.getElementById('persistence-status');
-  if(!navigator.storage?.persist){status.textContent='Este navegador não oferece solicitação de armazenamento persistente. Mantenha seus backups.';return;}
-  try{const granted=await navigator.storage.persist();status.textContent=granted?'Armazenamento persistente concedido. A limpeza manual dos dados ainda os apaga; mantenha seus backups.':'O navegador não concedeu armazenamento persistente. Seus dados continuam locais; mantenha seus backups.';}catch{status.textContent='Não foi possível solicitar persistência. Mantenha seus backups.';}
-});
+async function protectHistory(manual=false){
+  if(protectionBusy||protectedStorage)return;
+  protectionAttempted=true;protectionBusy=true;updateSaveStatus();
+  const result=await requestProtection(navigator.storage);
+  protectedStorage=result==='granted';protectionBusy=false;protectionChecked=true;updateSaveStatus();
+  if(manual)notify(protectedStorage?'Proteção extra ativada. A limpeza manual ainda apaga os dados.':'O salvamento automático continua ativo. A proteção extra não foi concedida.');
+}
+async function checkProtection(){
+  try{protectedStorage=await navigator.storage?.persisted?.()===true;}catch{}
+  protectionChecked=true;updateSaveStatus();
+}
+void checkProtection();
+document.getElementById('open-history').addEventListener('click',()=>{refreshSettings();document.getElementById('history-dialog').showModal();});
+const installKey='workout-install-observed';
+let installObserved=false;
+try{installObserved=localStorage.getItem(installKey)==='true';}catch{}
+function rememberInstall(){installObserved=true;try{localStorage.setItem(installKey,'true');}catch{}updateInstallGuide();}
+function updateInstallGuide(){
+  if(runningInstalled(window,navigator)){installObserved=true;try{localStorage.setItem(installKey,'true');}catch{}}
+  document.getElementById('install-guide').hidden=installObserved;
+}
+for(const mode of ['standalone','minimal-ui','window-controls-overlay'])matchMedia(`(display-mode: ${mode})`).addEventListener('change',updateInstallGuide);
+window.addEventListener('appinstalled',rememberInstall);
+window.addEventListener('pageshow',updateInstallGuide);
+document.getElementById('already-installed').addEventListener('click',rememberInstall);
+updateInstallGuide();
 window.addEventListener('storage',event=>{
   if(event.key!==STORAGE_KEY)return;
   try{saved=event.newValue===null?emptyState():validateState(JSON.parse(event.newValue));drafts={};theme=saved.preferences.theme;storageOK=true;automaticSaveBlocked=false;applyTheme();render();if(document.getElementById('settings').open)refreshSettings();notify('Dados atualizados por outra aba deste navegador.');}catch{notify('Outra aba gravou dados incompatíveis. Exporte seu estado atual antes de recarregar.');}
