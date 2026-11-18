@@ -2,10 +2,15 @@
 
 ## Automated checks completed
 
-- `npm test`: 16 tests passed for state retention, JSON validation/round trips, import non-mutation and replacement, quota failure, legacy migration/recovery, complete-session consistency and service-worker cache isolation/relative paths.
+- `npm test`: 23 tests passed for state retention, JSON validation/round trips, import non-mutation and replacement, quota failure/recovery, v1 storage and backup upgrades, load validation and history, complete-session consistency, fixed rest presets and service-worker cache isolation/relative paths.
 - `npm run check`: app, state and service-worker JavaScript syntax passed.
-- The new settings event handlers were also exercised in a temporary in-memory DOM harness using the machine's existing jsdom installation: marking a series, exporting a JSON Blob, preview/cancel, confirmed replacement/theme application, invalid JSON feedback, stale-preview rejection and confirmed clearing all passed. This additional harness is not a browser or device-installation test and is not a runtime dependency.
-- The underlying responsive layout was visually checked at mobile and desktop sizes in the preceding HTML iteration. The new settings controls have not received a fresh visual browser pass.
+- Headless Chrome checks using the machine's existing Playwright installation passed for the mobile header, panel changes without forced scrolling, expandable warm-up/video links, load save/reload, decimal entry, dated history across midnight, prior-load hints, reset preserving loads, JSON downloads and confirmed replacement, independent browser-context transfer, light/dark themes, and horizontal overflow at 320, 390 and 1366 px. Screenshots were inspected at 390 × 844 and 1366 × 768.
+- Chrome also passed an actual service-worker offline reload and local set saving without network access. A separate check migrated v1 browser data while preserving its source, simulated quota failure without a false save confirmation, kept the load dialog actionable and successfully retried the pending marks and load. Browser tests use fresh synthetic profiles, never the owner's real browser history.
+- The browser runner is a temporary validation harness, not a runtime dependency. Screenshots and result summaries are local review artifacts outside the repository.
+
+## Mobile scrolling finding
+
+Before the revision, tapping **Treinar** at a 390 × 844 viewport moved the page from `scrollY=0` to `524`; the settings button's top became `-506`. The revised panel switch keeps `scrollY=0`, and the fixed mobile header remains reachable while scrolling. Native Safari elastic scrolling and the software keyboard still need a physical-device check.
 
 ## Published deployment
 

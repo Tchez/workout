@@ -1,6 +1,6 @@
 # Workout
 
-A Portuguese personal workout PWA: a five-day training plan, mobility instructions with YouTube references, set completion, a rest timer and dated sessions saved in the browser. Settings export and restore a portable JSON backup for manual transfers between devices.
+A Portuguese personal workout PWA: a five-day training plan, expandable warm-up instructions with YouTube references, set completion, fixed rest timers and exercise loads saved by date. Settings export and restore a portable JSON backup for manual transfers between devices.
 
 **Live app:** https://tchez.github.io/workout/ · **Repository:** https://github.com/Tchez/workout
 
@@ -31,15 +31,25 @@ In **Configurações**, choose **Baixar backup JSON**, move that file to the oth
 
 The backup has a versioned envelope and includes preferences, all saved sessions and each session's exercise prescription snapshot. Invalid JSON, unsupported versions, inconsistent data and files over 5 MiB are rejected. A failed storage write does not report import success or replace the previous stored state. Treat exported backups as personal data; do not commit them to the public repository.
 
+## Workout flow
+
+- The current weekday opens by default. Mobile keeps **01 Aquecer / 02 Treinar**, progress and an always-accessible header with a settings gear. Switching panels does not automatically scroll the page.
+- Warm-up activities, including light movement and preparation sets, appear as expandable list items. YouTube links are limited to mobility demonstrations. Volleyball preparation and explanatory footnotes are omitted from the workout screen.
+- Tap **Carga +** on an exercise to save today's load in kilograms. Decimal commas and zero are supported. Each exercise has one load per dated session, with prior loads available in its dialog and the latest earlier load shown on the workout card. Use a consistent convention for dumbbells and machines; set-by-set loads and actual repetition logging are outside this increment.
+- Rest buttons use one duration matching their countdown: 2 minutes for compound exercises, 90 seconds for Bulgarian squats and 60 seconds for the other accessories. **+30s** still lets the user extend an active rest manually.
+- Every set change, completed warm-up and saved load writes immediately. The progress card confirms successful saves or reports unavailable storage. Installing the PWA and finalizing the workout are not prerequisites for saving.
+- **Configurações → Sessões registradas** expands dated sessions to show completed sets and loads. The current day's workout starts unmarked; earlier sessions remain in history and backups. Resetting today's marks preserves loads and previous dates.
+
 ## Storage behavior
 
-- `workout-state-v1` in `localStorage` holds preferences and sessions. Sessions are keyed by São Paulo calendar date and training-day ID. Earlier dates remain saved; the current settings panel lists the 20 most recent sessions, while export includes all of them.
-- Opening a training day creates only an in-memory draft. A set change or completed warm-up saves a session. Exercise IDs and planned sets/reps are captured for that session so later plan edits do not rewrite its prescription.
-- Read failures block automatic writes to avoid replacing corrupt saved data. Write failures retain the current in-memory state and show an export reminder. Quota and eviction behavior remain browser-controlled.
+- `workout-state-v2` in `localStorage` holds schema version 2 preferences and sessions, including exercise loads. Sessions are keyed by São Paulo calendar date and training-day ID. Earlier dates remain saved; settings lists the 20 most recent sessions, while export includes all of them.
+- Opening a training day creates only an in-memory draft. A set change, saved load or completed warm-up saves a session. Exercise IDs and planned sets/reps are captured for that session so later plan edits do not rewrite its prescription. Previous loads are a reference, not automatically recorded as today's load.
+- Read failures block automatic writes to avoid replacing corrupt saved data. Write failures retain the current in-memory state, show an export reminder and allow retry. Quota and eviction behavior remain browser-controlled.
 - Settings can request persistent storage, when supported. A denial does not disable the app. Even a grant does not protect against manual deletion; regular JSON backups are still needed.
-- Existing `marco-workout-v1` data is migrated when found on the same origin. The legacy key is left intact. Data on a different host, port or file origin cannot be read automatically; moving to a custom domain requires export/import.
+- Existing `workout-state-v1` data or the older `marco-workout-v1` format is migrated when found on the same origin. Source keys remain intact until an explicit clear; the new key prevents older open app versions from discarding load fields. Version 1 backups are still accepted and upgraded on import. Corrupt current data is never replaced by an older fallback.
+- Data belongs to the browser and its storage context. Different browsers, private windows and some installed-app contexts may have separate storage. Data on a different host, port or file origin cannot be read automatically; use export/import to move it, including when adopting a custom domain.
 - **Apagar sessões deste navegador** asks for confirmation, offers backup first, keeps the selected theme and only affects Workout's data. Resetting the current training day leaves other sessions intact.
-- Timer countdowns are transient. No load/repetition logging, accounts, backend or automatic device synchronization is included in this increment.
+- Timer countdowns are transient. No actual repetition logging, accounts, backend or automatic device synchronization is included in this increment.
 
 ## Files and maintenance
 
@@ -63,4 +73,4 @@ npm test
 npm run check
 ```
 
-The tests cover retention across dates, immutable prescription snapshots, backup round trips, preview non-mutation, replacement rather than merging, invalid files, quota failure, legacy recovery, GitHub Pages subpaths and offline-cache isolation. See [VALIDATION.md](VALIDATION.md) for the actual checks and remaining device checks.
+The tests cover retention across dates, immutable prescription snapshots, load validation/history, backup round trips, v1 upgrades, preview non-mutation, replacement rather than merging, invalid files, quota recovery, legacy recovery, rest presets, GitHub Pages subpaths and offline-cache isolation. See [VALIDATION.md](VALIDATION.md) for the actual checks and remaining device checks.

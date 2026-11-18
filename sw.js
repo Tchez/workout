@@ -1,5 +1,5 @@
 /* Bump the release when any app-shell file changes. */
-const RELEASE = '2026-11-17-v1';
+const RELEASE = '2026-11-18-v2';
 const ROOT = new URL('./', self.location.href);
 const PREFIX = 'workout:' + encodeURIComponent(ROOT.pathname) + ':';
 const CACHE = PREFIX + RELEASE;

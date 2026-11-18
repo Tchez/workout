@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { STORAGE_KEY, LEGACY_KEY, emptyState, createSession, setKey, sessionKey, validateState, loadState, saveState, exportBackup, parseBackup, replaceFromBackup, summarize } from './state.js';
+import { STORAGE_KEY, PREVIOUS_STORAGE_KEY, LEGACY_KEY, emptyState, createSession, setKey, sessionKey, validateState, loadState, saveState, exportBackup, parseBackup, replaceFromBackup, summarize, parseLoad, exerciseHistory } from './state.js';
 
 const days = JSON.parse(readFileSync(new URL('./workout.json', import.meta.url), 'utf8'));
 const memory = () => {
@@ -145,4 +145,73 @@ test('valid finished sessions require all prescribed sets, including unilateral 
   }
   session.finished = true;
   assert.equal(summarize(validateState(state)).completedSets, 15);
+});
+
+test('v1 sessions and backups upgrade without discarding dates or overwriting the original storage', () => {
+  const storage = memory();
+  const old = withSession();old.schemaVersion = 1;
+  delete old.sessions['2026-11-17:tue'].loads;
+  const original = JSON.stringify(old);
+  storage.setItem(PREVIOUS_STORAGE_KEY, original);
+  const result = loadState(storage, days);
+  assert.equal(result.migrated, true);
+  assert.equal(result.state.schemaVersion, 2);
+  assert.equal(result.state.sessions['2026-11-17:tue'].sets['supino-inclinado-com-halteres:0'], true);
+  assert.deepEqual(result.state.sessions['2026-11-17:tue'].loads, {});
+  assert.equal(storage.getItem(PREVIOUS_STORAGE_KEY), original);
+  assert.equal(JSON.parse(storage.getItem(STORAGE_KEY)).schemaVersion, 2);
+  const oldBackup = JSON.stringify({format:'workout-backup',formatVersion:1,exportedAt:old.updatedAt,state:old});
+  assert.deepEqual(parseBackup(oldBackup).state, result.state);
+});
+
+test('exercise loads survive reload and backup transfers across dates and training days', () => {
+  const state = withSession();
+  const id = 'elevacao-lateral';
+  state.sessions['2026-11-17:tue'].loads[id] = 12.5;
+  const next = createSession('2026-11-19', days[3]);next.loads[id] = 14;
+  state.sessions['2026-11-19:thu'] = next;
+  const storage = memory();saveState(storage, state);
+  const restored = parseBackup(exportBackup(loadState(storage, days).state)).state;
+  assert.deepEqual(exerciseHistory(restored, id).map(item => [item.date, item.kg]), [['2026-11-19', 14], ['2026-11-17', 12.5]]);
+  assert.deepEqual(createSession('2026-11-24',days[1]).loads, {});
+});
+
+test('load entry accepts decimal commas and zero, while rejecting ambiguous or invalid values', () => {
+  for (const [input, expected] of [['12,5',12.5],[' 20.25 ',20.25],['0',0],['2000',2000]]) assert.equal(parseLoad(input),expected);
+  for (const input of ['', '-1', 'Infinity', '12kg', '1.000,5', '1,234', '2001', '1e2']) assert.throws(() => parseLoad(input));
+});
+
+test('invalid or orphaned loads cannot replace a saved backup', () => {
+  const storage = memory();saveState(storage,withSession());
+  const before = storage.getItem(STORAGE_KEY);
+  const template = JSON.parse(exportBackup(withSession()));
+  for (const loads of [null, [], {'not-an-exercise':20}, {'elevacao-lateral':-1}, {'elevacao-lateral':'12'}, {'elevacao-lateral':2001}, {'elevacao-lateral':12.345}]) {
+    const changed=structuredClone(template);changed.state.sessions['2026-11-17:tue'].loads=loads;
+    assert.throws(()=>replaceFromBackup(storage,JSON.stringify(changed)));
+    assert.equal(storage.getItem(STORAGE_KEY),before);
+  }
+});
+
+test('a transient first write failure can recover without blocking later writes', () => {
+  const storage = memory();let blocked=true;
+  const flaky = {...storage,setItem:(key,value)=>{if(blocked)throw new Error('QuotaExceededError');storage.setItem(key,value);}};
+  const loaded=loadState(flaky,days);
+  assert.equal(loaded.available,false);assert.equal(loaded.blocked,false);
+  blocked=false;saveState(flaky,withSession());
+  assert.equal(loadState(storage,days).available,true);
+});
+
+test('a corrupt v2 record is never replaced by an older v1 fallback', () => {
+  const storage = memory();
+  storage.setItem(STORAGE_KEY,'{broken');storage.setItem(PREVIOUS_STORAGE_KEY,JSON.stringify(withSession()));
+  const loaded=loadState(storage,days);
+  assert.equal(loaded.blocked,true);
+  assert.equal(storage.getItem(STORAGE_KEY),'{broken');
+});
+
+test('rest presets use a single duration no longer than two minutes', () => {
+  for(const day of days)for(const exercise of day.exercises){
+    assert.ok(exercise.rest>0&&exercise.rest<=120);
+    assert.equal(exercise.restLabel,exercise.rest===120?'2 min':exercise.rest+' s');
+  }
 });

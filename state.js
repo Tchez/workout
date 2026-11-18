@@ -1,4 +1,5 @@
-export const STORAGE_KEY = 'workout-state-v1';
+export const STORAGE_KEY = 'workout-state-v2';
+export const PREVIOUS_STORAGE_KEY = 'workout-state-v1';
 export const LEGACY_KEY = 'marco-workout-v1';
 export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 const THEMES = new Set(['dark', 'light', 'system']);
@@ -34,7 +35,7 @@ function boolean(value) {
 }
 
 export function emptyState() {
-  return { schemaVersion: 1, preferences: { theme: 'dark' }, sessions: {}, updatedAt: now() };
+  return { schemaVersion: 2, preferences: { theme: 'dark' }, sessions: {}, updatedAt: now() };
 }
 
 export function setKey(exercise, index) {
@@ -49,7 +50,7 @@ export function createSession(sessionDate, day) {
   return {
     date: date(sessionDate), dayId: day.id, title: day.title,
     exercises: day.exercises.map(({ id, name, sets, reps }) => ({ id, name, sets, reps })),
-    sets: {}, warm: false, finished: false, updatedAt: now()
+    sets: {}, loads: {}, warm: false, finished: false, updatedAt: now()
   };
 }
 
@@ -65,11 +66,26 @@ export function sessionProgress(session) {
   return { total, completed };
 }
 
+export function exerciseHistory(state, exerciseId) {
+  return Object.values(state.sessions)
+    .filter(session => Object.hasOwn(session.loads, exerciseId))
+    .sort((a, b) => b.date.localeCompare(a.date) || b.updatedAt.localeCompare(a.updatedAt))
+    .map(session => ({ date: session.date, dayId: session.dayId, title: session.title, kg: session.loads[exerciseId] }));
+}
+
+export function parseLoad(value) {
+  const normalized = String(value).trim().replace(',', '.');
+  if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) fail('Informe uma carga em kg, como 20 ou 12,5.');
+  const kg = Number(normalized);
+  if (kg > 2000) fail('Informe uma carga entre 0 e 2.000 kg.');
+  return kg;
+}
+
 export function validateState(input) {
-  if (!isObject(input) || input.schemaVersion !== 1) fail('Versão de dados incompatível. Use um backup do Workout v1.');
+  if (!isObject(input) || ![1, 2].includes(input.schemaVersion)) fail('Versão de dados incompatível. Atualize o Workout para importar este backup.');
   if (!isObject(input.preferences) || !THEMES.has(input.preferences.theme)) fail('Tema inválido no backup.');
   if (!isObject(input.sessions)) fail('O backup não contém uma lista de sessões válida.');
-  const result = { schemaVersion: 1, preferences: { theme: input.preferences.theme }, sessions: {}, updatedAt: timestamp(input.updatedAt) };
+  const result = { schemaVersion: 2, preferences: { theme: input.preferences.theme }, sessions: {}, updatedAt: timestamp(input.updatedAt) };
   for (const [key, value] of Object.entries(input.sessions)) {
     if (!isObject(value)) fail('Sessão inválida no backup.');
     const sessionDate = date(value.date);
@@ -93,7 +109,14 @@ export function validateState(input) {
       if (!allowedSets.has(set)) fail('O backup contém uma marcação que não pertence aos exercícios da sessão.');
       sets[set] = boolean(checked);
     }
-    const session = { date: sessionDate, dayId, title: label(value.title), exercises, sets, warm: boolean(value.warm), finished: boolean(value.finished), updatedAt: timestamp(value.updatedAt) };
+    const inputLoads = input.schemaVersion === 1 && value.loads === undefined ? {} : value.loads;
+    if (!isObject(inputLoads)) fail('Cargas inválidas no backup.');
+    const loads = {};
+    for (const [id, kg] of Object.entries(inputLoads)) {
+      if (!seen.has(id) || typeof kg !== 'number' || !Number.isFinite(kg) || kg < 0 || kg > 2000 || Math.abs(kg * 100 - Math.round(kg * 100)) > 1e-7) fail('O backup contém uma carga inválida ou sem exercício correspondente.');
+      loads[id] = kg;
+    }
+    const session = { date: sessionDate, dayId, title: label(value.title), exercises, sets, loads, warm: boolean(value.warm), finished: boolean(value.finished), updatedAt: timestamp(value.updatedAt) };
     const progress = sessionProgress(session);
     if (session.finished && progress.total !== progress.completed) fail('Uma sessão finalizada contém séries pendentes.');
     result.sessions[key] = session;
@@ -129,14 +152,15 @@ export function loadState(storage, days) {
   let recovered = null;
   try {
     const raw = storage.getItem(STORAGE_KEY);
-    if (raw !== null) return { state: validateState(JSON.parse(raw)), available: true, migrated: false, error: null };
-    const legacy = storage.getItem(LEGACY_KEY);
-    const state = legacy === null ? emptyState() : migrateLegacy(JSON.parse(legacy), days);
+    if (raw !== null) return { state: validateState(JSON.parse(raw)), available: true, blocked: false, migrated: false, error: null };
+    const previous = storage.getItem(PREVIOUS_STORAGE_KEY);
+    const legacy = previous === null ? storage.getItem(LEGACY_KEY) : null;
+    const state = previous !== null ? validateState(JSON.parse(previous)) : legacy === null ? emptyState() : migrateLegacy(JSON.parse(legacy), days);
     recovered = state;
     storage.setItem(STORAGE_KEY, JSON.stringify(state));
-    return { state, available: true, migrated: legacy !== null, error: null };
+    return { state, available: true, blocked: false, migrated: previous !== null || legacy !== null, error: null };
   } catch (error) {
-    return { state: recovered || emptyState(), available: false, migrated: false, error };
+    return { state: recovered || emptyState(), available: false, blocked: recovered === null, migrated: false, error };
   }
 }
 

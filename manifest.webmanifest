@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "Workout · Meu treino",
-  "short_name": "Workout",
+  "name": "Workout app",
+  "short_name": "Workout app",
   "description": "Ficha de treino, mobilidade e sessões salvas no seu dispositivo.",
   "lang": "pt-BR",
   "start_url": "./",
@@ -10,8 +10,23 @@
   "background_color": "#111413",
   "theme_color": "#111413",
   "icons": [
-    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
